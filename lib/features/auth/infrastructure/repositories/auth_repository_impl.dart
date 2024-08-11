@@ -18,8 +18,8 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<User> register(String email, String password) {
-    return datasource.register(email, password);
+  Future<User> register(String name, String email, String password) {
+    return datasource.register(name, email, password);
   }
 
   @override
@@ -28,7 +28,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> signOut() {
-    return datasource.signOut();
+  Future<void> signOut(String token) {
+    return datasource.signOut(token);
   }
 }
