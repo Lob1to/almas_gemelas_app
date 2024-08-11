@@ -1,11 +1,13 @@
 import 'package:almas_gemelas_app/features/auth/domain/datasources/auth_datasource.dart';
 import 'package:almas_gemelas_app/features/auth/domain/entities/user.dart';
 import 'package:almas_gemelas_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:almas_gemelas_app/features/auth/infrastructure/infrastructure.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthDatasource datasource;
 
-  AuthRepositoryImpl({required this.datasource});
+  AuthRepositoryImpl({AuthDatasource? datasource})
+      : datasource = datasource ?? AuthDatasourceImpl();
 
   @override
   Future<User> login(String email, String password) {
