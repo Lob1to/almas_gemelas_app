@@ -1,4 +1,5 @@
 import 'package:almas_gemelas_app/config/routes/app_router.dart';
+import 'package:almas_gemelas_app/config/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,6 +21,7 @@ class MainApp extends ConsumerWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: ref.watch(appRouterProvider),
+      theme: AppTheme.getTheme(),
     );
   }
 }
