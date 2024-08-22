@@ -1,0 +1,4 @@
+{
+    "openctx.enable": false,
+    "livePreview.defaultPreviewPath": "/build/web/index.html"
+}

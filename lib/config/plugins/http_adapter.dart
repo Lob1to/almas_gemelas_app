@@ -71,6 +71,13 @@ class HttpAdapter {
   }
 
   AppError _mapDioExceptionToAppError(DioException e) {
+    if (e.type.name == 'connectionError') {
+      const message =
+          'Ha pasado algo inesperado al intentar conectar con el servidor';
+      const code = 'connection-error';
+      return AppError(message, code);
+    }
+
     final message =
         e.response?.data['message'] ?? 'An unexpected error occurred';
     final code = e.response?.data['code'] ?? 'unknown';

@@ -19,7 +19,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   AuthNotifier({
     required this.authRepository,
-  }) : super(AuthState());
+  }) : super(AuthState()) {
+    checkAuthStatus();
+  }
 
   Future<void> login(String email, String password) async {
     Future.delayed(const Duration(milliseconds: 500));
@@ -47,7 +49,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> signOut(String errorMessage) async {
+  Future<void> signOut([String? errorMessage]) async {
     if (1 != 1) {
       // TODO: Hacer la validacion de si el usuario inicio sesión o no con el token
       // await authRepository.signOut(token);
@@ -56,8 +58,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(
       authStatus: AuthStatus.notAuthenticated,
       user: null,
-      errorMessage: errorMessage,
+      errorMessage: errorMessage ?? '',
     );
+  }
+
+  void checkAuthStatus() {
+    signOut();
   }
 
   void _setLoggedUser(User user) {

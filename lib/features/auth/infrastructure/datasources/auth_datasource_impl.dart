@@ -22,6 +22,7 @@ class AuthDatasourceImpl implements AuthDatasource {
         {'code': e.code, 'message': e.message},
       );
     } catch (e) {
+      print(e);
       throw AppError('¡Ups! Ha sucedido algo inesperado...', 'unknown-error');
     }
   }
