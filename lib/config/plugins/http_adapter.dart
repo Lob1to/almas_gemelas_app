@@ -80,7 +80,7 @@ class HttpAdapter {
 
     final message =
         e.response?.data['message'] ?? 'An unexpected error occurred';
-    final code = e.response?.data['code'] ?? 'unknown';
+    final code = e.response?.data['errorCode'] ?? 'unknown';
     return AppError(message, code);
   }
 }
