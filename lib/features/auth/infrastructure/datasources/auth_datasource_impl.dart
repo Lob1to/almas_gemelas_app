@@ -22,7 +22,6 @@ class AuthDatasourceImpl implements AuthDatasource {
         {'code': e.code, 'message': e.message},
       );
     } catch (e) {
-      print(e);
       throw AppError('¡Ups! Ha sucedido algo inesperado...', 'unknown-error');
     }
   }
@@ -84,7 +83,7 @@ class AuthDatasourceImpl implements AuthDatasource {
   Future<User> refreshToken(String refreshToken) async {
     try {
       final response = await http.post('/auth/refresh-token/', data: {
-        'refreshToken': refreshToken,
+        'token': refreshToken,
       });
 
       final user = UserMapper.fromUserJsonToEntity(response.data);

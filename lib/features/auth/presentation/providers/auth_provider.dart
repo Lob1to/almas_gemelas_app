@@ -1,14 +1,18 @@
 import 'package:almas_gemelas_app/features/auth/domain/domain.dart';
 import 'package:almas_gemelas_app/features/auth/infrastructure/infrastructure.dart';
+import 'package:almas_gemelas_app/features/shared/domain/domain.dart';
+import 'package:almas_gemelas_app/features/shared/infrastructure/infrastructure.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //! 3. StateNotifierProvider
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final authRepository = AuthRepositoryImpl();
+  final keyValueStorageRepository = KeyValueStorageRepositoryImpl();
 
   return AuthNotifier(
     authRepository: authRepository,
+    keyValueStorageRepository: keyValueStorageRepository,
   );
 });
 
@@ -16,8 +20,10 @@ final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepository authRepository;
+  final KeyValueStorageRepository keyValueStorageRepository;
 
   AuthNotifier({
+    required this.keyValueStorageRepository,
     required this.authRepository,
   }) : super(AuthState()) {
     checkAuthStatus();
@@ -50,10 +56,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> signOut([String? errorMessage]) async {
-    if (1 != 1) {
-      // TODO: Hacer la validacion de si el usuario inicio sesión o no con el token
-      // await authRepository.signOut(token);
-    }
+    final token =
+        await keyValueStorageRepository.getValue<String>('refresh-token');
+
+    if (token != null) await authRepository.signOut(token);
+
+    await keyValueStorageRepository.removeKey('token');
 
     state = state.copyWith(
       authStatus: AuthStatus.notAuthenticated,
@@ -62,12 +70,25 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
   }
 
-  void checkAuthStatus() {
-    signOut();
+  void checkAuthStatus() async {
+    final token =
+        await keyValueStorageRepository.getValue<String>('refresh-token');
+
+    if (token == null) return signOut();
+
+    try {
+      final user = await authRepository.refreshToken(token);
+      _setLoggedUser(user);
+    } catch (e) {
+      signOut();
+    }
   }
 
-  void _setLoggedUser(User user) {
-    //TODO: Almacenar el token del usuario en el dispositivo
+  void _setLoggedUser(User user) async {
+    await keyValueStorageRepository.setKeyValue(
+        'refresh-token', user.refreshToken);
+    await keyValueStorageRepository.setKeyValue(
+        'access-token', user.accessToken);
 
     state = state.copyWith(
       authStatus: AuthStatus.authenticated,
