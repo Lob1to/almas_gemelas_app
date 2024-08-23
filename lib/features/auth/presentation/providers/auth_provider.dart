@@ -56,6 +56,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> signOut([String? errorMessage]) async {
+    final token =
+        await keyValueStorageRepository.getValue<String>('refresh-token');
+
+    if (token != null) await authRepository.signOut(token);
+
     await keyValueStorageRepository.removeKey('token');
 
     state = state.copyWith(

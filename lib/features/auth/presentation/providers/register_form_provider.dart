@@ -57,7 +57,7 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
         isValid: Formz.validate([state.fullName, state.email, state.password]));
   }
 
-  void onFormSumbit() async {
+  void onFormSubmit() async {
     _touchEveryField();
 
     if (!state.isValid) return;

@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool showVisibilityButton;
   final TextInputType? keyboardType;
   final Function(String)? onChanged;
+  final Function(String)? onSubmit;
   final String? Function(String?)? validator;
   final Function? passwordVisibilityCallback;
 
@@ -24,6 +25,7 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.passwordVisibilityCallback,
     this.showVisibilityButton = false,
+    this.onSubmit,
   });
 
   @override
@@ -76,6 +78,7 @@ class CustomTextFormField extends StatelessWidget {
               ]),
           child: TextFormField(
             onChanged: onChanged,
+            onFieldSubmitted: onSubmit,
             validator: validator,
             obscureText: obscureText,
             keyboardType: keyboardType,

@@ -17,7 +17,7 @@ final appRouterProvider = Provider<GoRouter>(
           ///* Home Screens
           GoRoute(
             path: '/',
-            builder: (context, state) => const HomeScreen(),
+            builder: (context, state) => const MainScreen(),
           ),
 
           ///* Auth Screens

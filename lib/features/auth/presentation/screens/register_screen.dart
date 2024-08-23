@@ -132,6 +132,8 @@ class _RegisterForm extends ConsumerWidget {
             errorMessage: registerForm.isFormPosted
                 ? registerForm.repeatPassword.errorMessage
                 : null,
+            onSubmit: (_) =>
+                ref.read(registerFormProvider.notifier).onFormSubmit(),
           ),
           const SizedBox(height: 30),
           CustomFilledButton(
@@ -139,7 +141,7 @@ class _RegisterForm extends ConsumerWidget {
             buttonColor: const Color(0xffF1B2B9),
             onPressed: (registerForm.isPosting)
                 ? null
-                : ref.read(registerFormProvider.notifier).onFormSumbit,
+                : ref.read(registerFormProvider.notifier).onFormSubmit,
           ),
           const SizedBox(height: 60),
           Row(
